@@ -15,11 +15,33 @@
 
 
 
-window.findNRooksSolution = function(n) {
-  var solution = undefined; //fixme
-
-  console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
+window.findNRooksSolution = function(size) {
+  var solution; //fixme
+  var brd = new Board({n: size});
+  console.log('brd is ', brd);
+  findSolutionHelper(brd, 0, size, function(brd) { return solution = brd.rows(); });
+  console.log('Single solution for ' + size + ' rooks:', JSON.stringify(solution));
   return solution;
+};
+
+// Can remove end parameter
+var findSolutionHelper = function(board, row, end, callback) {
+  // for every square on the board:
+  console.log('incoming board ', board.rows());
+  if (row === board.get('n')) {
+    return callback(board);
+  }
+  for (var col = 0; col < board.get('n'); col++) {
+    board.togglePiece(row, col); // testing hardcoding values
+    console.log('toggled once: ', board.rows());
+    if (!board.hasAnyRooksConflicts()) {
+      var tempBoard = findSolutionHelper(board, row + 1, end, callback);
+      if (tempBoard) {
+        return tempBoard;
+      }
+    }
+    board.togglePiece(row, col);
+  }
 };
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
