@@ -127,14 +127,21 @@
     // --------------------------------------------------------------
     //
     // test if a specific major diagonal on this board contains a conflict
-    hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
+    hasMajorDiagonalConflictAt: function(offSet) {
       var sum = 0;
-      for (var i = 0, j = majorDiagonalColumnIndexAtFirstRow; i < this.get('n') && j < this.get('n'); i++, j++) {
-        if (j >= 0) {
-          sum += this.get(i)[j];
+      for (var row = 0; row < this.get('n'); row++) {
+        var col = offSet + row;
+        if ((col >= 0) && (row >= 0) && (col < this.get('n')) && (row < this.get('n'))) {
+          sum += this.get(row)[col];
         }
       }
-      return sum > 1; // fixme
+      // for (var i = 0, j = majorDiagonalColumnIndexAtFirstRow; i < this.get('n') && j < this.get('n'); i++, j++) {
+      //   if (j >= 0) {
+      //     sum += this.get(i)[j];
+      //   }
+      // }
+      //console.log(this , 'diagonal ', 'the sum ', sum);
+      return sum > 1; 
     },
 
     // test if any major diagonals on this board contain conflicts
